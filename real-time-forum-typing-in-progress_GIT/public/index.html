@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="icon" href="hacker.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="hacker.ico" type="image/x-icon">
+    <title>Real Time Forum</title>
+
+</head>
+
+<body>
+
+
+    <!-- -----------------------------------------------Register--------------------------------------------------------->
+
+
+    <div class="register_form_container" style="display:none;">
+        <div class="register_form">
+            <h2 class="R-title">Register</h2>
+            <!-- return false est utilisé pour empêcher la page HTML de se recharger après la soumission du formulaire -->
+            <form onsubmit="submitFormRegister(); return false" id="registerForm">
+                <div class="input_group">
+                    <label for="nickname"></label>
+                    <i class="fa fa-user"></i>
+                    <input type="text" name="nickname" id="R-nickname" class="input_text" placeholder="Nickname"
+                        autocomplete="off">
+                </div>
+
+                <div class="input_group">
+                    <label for="age"></label>
+                    <i class="fa fa-birthday-cake"></i>
+                    <div class="quantity">
+                        <input type="number" name="age" id="R-age" min="0" placeholder="Age">
+                    </div>
+                </div>
+                <div class="input_group">
+                    <label for="gender"></label>
+                    <i class="fa fa-venus-mars"></i>
+
+                    <select id="R-gender" name="gender" required placeholder="Gender">
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                    </select>
+
+                </div>
+
+                <div class="input_group">
+                    <label for="first-name"></label>
+                    <i class="fa fa-id-card-o"></i>
+                    <input type="text" id="R-first-name" name="first-name" required class="input_text"
+                        placeholder="First Name" autocomplete="off">
+                </div>
+
+                <div class="input_group">
+                    <label for="last-name"></label>
+                    <i class="fa fa-id-card-o"></i>
+                    <input type="text" id="R-last-name" name="last-name" required class="input_text"
+                        placeholder="Last Name" autocomplete="off">
+                </div>
+
+                <div class="input_group">
+                    <label for="email"></label>
+                    <i class="fa fa-envelope"></i>
+                    <input type="email" id="R-email" name="email" required class="input_text" placeholder="E-mail"
+                        autocomplete="off">
+                </div>
+
+                <div class="input_group">
+                    <label for="password"></label>
+                    <i class="fa fa-unlock-alt"></i>
+                    <input type="password" id="R-password" name="password" required class="input_text"
+                        placeholder="Password" autocomplete="off">
+                </div>
+
+                <div id="reg_notif"></div>
+
+                <div id="register_button">
+                    <input type="submit" value="Register">
+                </div>
+            </form>
+            <div class="footer">
+                <!-- <button onclick="switchToLogin()">Sign In</button> -->
+                <button id="Sign_In">Sign In</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- -----------------------------------------------Login--------------------------------------------------------->
+
+
+    <div class="login_form_container">
+        <div class="login_form">
+
+            <h2 class="L-title">Login</h2>
+            <form onsubmit="submitFormLogin(); return false" id="loginForm" method="post">
+                <div class="input_group">
+                    <label for="identifier"></label>
+                    <i class="fa fa-user"></i>
+                    <input type="text" name="identifier" id="identifier" class="input_text"
+                        placeholder="Username or E-mail" autocomplete="off">
+                </div>
+
+                <div class="input_group">
+                    <label for="password"></label>
+                    <i class="fa fa-unlock-alt"></i>
+                    <input type="password" name="password" id="password" class="input_text" placeholder="Password"
+                        autocomplete="off">
+                </div>
+
+                <div id="login_notif"></div>
+                <div id="forgot_password"></div>
+
+                <div class="" id="login_button">
+                    <input type="submit" value="Submit">
+                </div>
+            </form>
+
+            <div class="footer">
+                <button onclick="forgotPassword()">Forgot Password ?</button>
+                <!-- <button onclick="switchToRegister()">Sign Up</button> -->
+                <button id="Sign_Up">Sign Up</button>
+            </div>
+            <!-- <a id="register-return">Return to register</a> -->
+        </div>
+    </div>
+
+
+    <!-- ----------------------------------------------- Forum --------------------------------------------------------->
+
+    <div class="global_container" style="display: none;">
+
+        <!---------------------------------- Header ------------------------------------->
+
+        <div class="header">
+            <div class="logo_container">
+                <img class="logo" src="images/pngegg.png" alt="logo">
+            </div>
+            <h2 id="welcome"></h2>
+            <div id="logout_button">
+                <button onclick="logout()">Logout</button>
+            </div>
+        </div>
+
+        <div class="application">
+
+            <!-- ------------------------ Connected Users ---------------------------->
+            <div class="ppl_container" style="display: none;">
+                <div class="people-online">
+                    <i id="chat_logo" class="fa fa-comments"></i>
+                    <h2 id="ppl_title">People online</h2>
+                    <div id="connected-users">
+                    </div>
+                </div>
+            </div>
+
+            <!--------------------------- Private Messages ---------------------------->
+
+            <div id="chat_window" style="display: none;">
+                <div id="chat_box_header">
+                    <h2 id="chat_user"></h2>
+                    <button id="close_chat_window" onclick="closeChatWindow()">
+                        <i class="fa fa-times-circle"></i></button>
+                </div>
+
+               <div id="chat_box" class="chat_box">
+            </div>
+            <div id="typing_indicator" style="display: none;">is typing...</div>
+
+                <div class="input_group" id="input_chat">
+                    <form onsubmit="submitFormMessage(); return false" id="privateMessageBox">
+                        <input type="text" name="content" id="messageContent" oninput="typingEvent()" class="input_text" cols="30" rows="1" 
+                            placeholder="Type your message here...">
+                        <div id="send_button">
+                            <input type="submit" value="Send">
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+
+
+
+            <!-- ---------Forum------------->
+
+            <div class="forum_container" style="display: none;">
+                <div class="forum">
+
+                    <!-- ------------Create Post----------------->
+                    <div id="create_post">
+                        <button>Create a Post</button>
+                    </div>
+                    
+                    <div id="new_post" style="display: none;">
+                        <div id="new_post_header">
+                            <h2>Create a new post</h2>
+                            <button id="close_post_window" onclick="closePostWindow()">
+                                <i class="fa fa-times-circle"></i>
+                            </button>
+                        </div>
+                        <form onsubmit="submitFormPost()" action="javascript:void(0);" id="post_form">
+                            <div class="input_group">
+                                <input type="text" name="title" id="new_post_title" class="input_text" placeholder="Title of your post" autocomplete="off">
+                            </div>
+                            <div class="input_group" id="new_post_content_container">
+                                <textarea id="new_post_content" name="content" cols="30" rows="4" class="input_text" placeholder="Content of your post" autocomplete="off"></textarea>
+                            </div>
+                            <div id="create_post_button">
+                                <input type="submit" value="Create">
+                            </div>
+                        </form>
+                    </div>
+
+                    <!--------------------- Posts ------------------------>
+                    <div id="posts">
+                        
+                    </div>
+
+                    <!--------------------- Comments ------------------------>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    
+    <button id=ex onclick="exemplJS()" style="display: none;">EXEMPLE</button>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+    <script src="./js/app.js"></script>
+    <script src="./js/style.js"></script>
+
+</body>
+
+</html>
